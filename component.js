@@ -15,13 +15,13 @@ contact.extend('Component', function(properties){
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-              el.innerHTML = properties.template;
+              return properties.template;
             }
         };
         xhttp.open("GET", properties.template.slice(1), true);
         xhttp.send();
       } else {
-        el.innerHTML = properties.template;
+        return properties.template;
       }
     }
   }

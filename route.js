@@ -2,10 +2,13 @@ contact.extend('Route', function(){
   var public = {};
 
   var routes = [];
-  var router = function(selector){
-    var el = document.querySelector(selector);
+  var fallback;
+
+  var router = function(){
+    var el = document.querySelector('app');
     var url = location.hash.slice(1) || '/';
 
+    routes[url] = routes[url] || fallback;
     el.innerHTML = routes[url].render();
   }
   public.when = function(path, component){
@@ -15,8 +18,15 @@ contact.extend('Route', function(){
     return routes;
   }
 
-  window.addEventListener('hashchange', router);
-  window.addEventListener('load', router);
+  public.prepare = function(selector){
+    fallback = new contact.Component({
+      selector: 'app',
+      template: '<h1>Route not found</h1>'
+    });
+
+    window.addEventListener('hashchange', router);
+    window.addEventListener('load', router);
+  }
 
   return public;
 }, true);
